@@ -3,6 +3,7 @@ module Tictail
   class Client
     include HTTParty
     base_uri 'https://api.tictail.com/v1'
+    debug_output
     
     attr_reader :token, :store_id
     
@@ -28,38 +29,34 @@ module Tictail
     def store
       response = self.class.get(
         '/stores/%s' % store_id,
-        headers: {
-          'Authorization' => 'Bearer %s' % token,
-          'Cookie' => 'ticman=ticman'
-        }
+        headers: headers
       )
-      OpenStruct.new(response.parsed_response)
+      response.parsed_response
     end
     
-    def customers
+    def customers(params={})
       response = self.class.get(
         '/stores/%s/customers' % store_id,
-        headers: {
-          'Authorization' => 'Bearer %s' % token,
-          'Cookie' => 'ticman=ticman'
-        }
+        headers: headers,
+        query: params
       )
-      response.parsed_response.map do |customer|
-        OpenStruct.new(customer)
-      end
+      response.parsed_response
     end
     
-    def followers
+    def followers(params={})
       response = self.class.get(
         '/stores/%s/followers' % store_id,
-        headers: {
-          'Authorization' => 'Bearer %s' % token,
-          'Cookie' => 'ticman=ticman'
-        }
+        headers: headers,
+        query: params
       )
-      response.parsed_response.map do |follower|
-        OpenStruct.new(follower)
-      end
+      response.parsed_response
+    end
+    
+    def headers
+      {
+        'Authorization' => 'Bearer %s' % token,
+        'Cookie' => 'ticman=ticman'
+      }
     end
   end
 end
