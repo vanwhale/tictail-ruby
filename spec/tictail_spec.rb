@@ -26,65 +26,28 @@ describe Tictail do
     end
   end
   
-  describe "access_token" do
-    
-    it "should set access token to env var" do
-      Tictail.access_token.should == ENV['TICTAIL_ACCESS_TOKEN']
-    end
-    
-    it "should set access token" do
-      Tictail.access_token = 'test_access_token'
-      Tictail.access_token.should == 'test_access_token'
-    end
-  end
-  
-  describe "decode_id_token" do
-    
-    it "should decode id token" do
-      Tictail.client_secret = 'secret'
-      id_token = {'tictail_store_id' => 'foo'}
-      encoded_id_token = JWT.encode(id_token, Tictail.client_secret)
-      Tictail.decode_id_token(encoded_id_token).should == id_token
-    end
-  end
-  
-  describe "valid_id_token?" do
-    
-    it "should return true for valid token" do
-      token = {
+  describe "get_access_token" do
+    let(:jwt_hash) {
+      {
         'iss' => Tictail.site_url,
         'aud' => Tictail.client_id,
-        'tictail_store_id' => 'foo'
+        'tictail_store_id' => 'test_store_id'
       }
-      Tictail.valid_id_token?(token).should be_true
+    }
+    let(:encoded_id_token) { JWT.encode(jwt_hash, Tictail.client_secret) }
+    let(:oauth_token) { OAuth2::AccessToken.new(Tictail.oauth_client, 'test_token', 'id_token' => encoded_id_token) }
+    
+    before do
+      Tictail.should_receive(:get_oauth_access_token).and_return(oauth_token)
     end
     
-    it "should return false for invalid token" do
-      token = {
-        'iss' => 'foo',
-        'aud' => 'bar'
-      }
-      Tictail.valid_id_token?(token).should be_false
-    end
-  end
-  
-  describe "store_id" do
-    
-    it "should set store id to env var" do
-      Tictail.store_id.should == ENV['TICTAIL_STORE_ID']
-    end
-    
-    it "should set store id" do
-      Tictail.store_id = 'test_store_id'
-      Tictail.store_id.should == 'test_store_id'
-    end
-  end
-  
-  describe "store" do
-    
-    it "should return store" do
-      store = Tictail.store
-      puts store.attributes
+    it 'returns access token' do
+      access_token = Tictail.get_access_token(
+        'auth_code',
+        redirect_uri: 'http://localhost:3000/integrations/tictail/authorized'
+      )
+      access_token.token.should == 'test_token'
+      access_token.store_id.should == 'test_store_id'
     end
   end
 end

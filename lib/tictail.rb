@@ -6,6 +6,8 @@ require 'jwt'
 module Tictail
   extend self
   
+  autoload :AccessToken, 'tictail/access_token'
+  autoload :IDToken, 'tictail/id_token'
   autoload :Store, 'tictail/store'
   autoload :Request, 'tictail/request'
   autoload :Resource, 'tictail/resource'
@@ -26,30 +28,16 @@ module Tictail
     end
     
     def get_access_token(*args)
-      oauth_token = oauth_client.auth_code.get_token(*args)
-      encoded_id_token = oauth_token.params['id_token']
-      id_token = decode_id_token(encoded_id_token)
-      if valid_id_token?(id_token)
-        self.store_id = id_token['tictail_store_id']
-        self.access_token = oauth_token.token
-      else
-        raise InvalidIDToken
-      end
-      access_token
+      oauth_access_token = get_oauth_access_token(*args)
+      id_token = IDToken.new(oauth_access_token.params['id_token'])
+      AccessToken.new(
+        token: oauth_access_token.token,
+        store_id: id_token.store_id
+      )
     end
     
-    def decode_id_token(encoded_id_token)
-      JWT.decode(encoded_id_token, client_secret)
-    end
-    
-    def valid_id_token?(id_token)
-      id_token['iss'] == site_url && 
-        id_token['aud'] == client_id && 
-        !id_token['tictail_store_id'].nil?
-    end
-    
-    def store
-      Tictail::Store.find(store_id)
+    def get_oauth_access_token(*args)
+      oauth_client.auth_code.get_token(*args)
     end
   end
   
@@ -68,11 +56,3 @@ end
 
 Tictail.client_id = ENV['TICTAIL_CLIENT_ID']
 Tictail.client_secret = ENV['TICTAIL_CLIENT_SECRET']
-
-if ENV['TICTAIL_ACCESS_TOKEN']
-  Tictail.access_token = ENV['TICTAIL_ACCESS_TOKEN']
-end
-
-if ENV['TICTAIL_STORE_ID']
-  Tictail.store_id = ENV['TICTAIL_STORE_ID']
-end
