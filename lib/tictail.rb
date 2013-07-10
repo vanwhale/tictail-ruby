@@ -8,9 +8,7 @@ module Tictail
   
   autoload :AccessToken, 'tictail/access_token'
   autoload :IDToken, 'tictail/id_token'
-  autoload :Store, 'tictail/store'
-  autoload :Request, 'tictail/request'
-  autoload :Resource, 'tictail/resource'
+  autoload :Client, 'tictail/client'
   
   class << self
     attr_accessor :client_id, :client_secret, :access_token, :store_id
