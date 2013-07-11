@@ -1,17 +1,26 @@
 module Tictail
   
   class IDToken
-    attr_accessor :token
+    attr_accessor :token, :options
     
-    def initialize(encoded_id_token)
-      self.token = JWT.decode(encoded_id_token, Tictail.client_secret)
-      validate!
+    def initialize(token, options={})
+      @token = JWT.decode(token, Tictail.client_secret)
+      @options = options
     end
     
-    def validate!
-      raise InvalidIDToken unless token['iss'] == Tictail.site_url && 
+    def validate!(nonce=nil)
+      raise InvalidIDToken unless valid?
+    end
+    
+    def valid?
+      token['iss'] == Tictail.site_url && 
         token['aud'] == Tictail.client_id && 
+        (nonce.nil? || nonce == token['nonce'])
         !store_id.nil?
+    end
+    
+    def nonce
+      options[:nonce]
     end
     
     def store_id
