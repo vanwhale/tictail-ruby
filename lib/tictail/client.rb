@@ -53,8 +53,7 @@ module Tictail
     
     def headers
       {
-        'Authorization' => 'Bearer %s' % token,
-        'Cookie' => 'ticman=ticman'
+        'Authorization' => 'Bearer %s' % token
       }
     end
   end
