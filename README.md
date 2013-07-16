@@ -38,3 +38,33 @@ Get an access token with an auth code:
     access_token.token # => 'STORE_OAUTH_ACCESS_TOKEN'
     access_token.store_id # => 'STORE_ID'
     access_token.store # => Tictail::Store instance
+
+Build an access token with a saved access token
+
+    access_token = Tictail::AccessToken.new(
+      token: 'STORE_OAUTH_ACCESS_TOKEN',
+      store_id: 'STORE_ID
+    )
+
+### Customers and Followers
+
+    client = TictailClient.new(access_token)
+    customers = client.customers
+    customer_emails = customers.map{|customer| customer['email']}
+    followers = client.followers
+    follower_emails = followers.map{|follower| follower['email']}
+
+### Feed cards
+
+    client = TictailClient.new(access_token)
+    client.create_card(
+      title: 'Welcome to our Tictail app',
+      action: 'http://example.com/',
+      card_type: 'media',
+      content: {
+        header: 'Welcome!',
+        caption: 'Enjoy your stay',
+        image: 'http://placekitten.com/800/450'
+      }
+    )
+    card_titles = client.cards.map{|card| card['title']}
