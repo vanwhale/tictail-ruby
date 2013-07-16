@@ -3,7 +3,6 @@ module Tictail
   class Client
     include HTTParty
     base_uri 'https://api.tictail.com/v1'
-    debug_output
     
     attr_reader :token, :store_id
     
