@@ -3,6 +3,7 @@ module Tictail
   class Client
     include HTTParty
     base_uri 'https://api.tictail.com/v1'
+    debug_output
     
     attr_reader :token, :store_id
     
@@ -64,7 +65,7 @@ module Tictail
       response = self.class.post(
         '/stores/%s/cards' % store_id,
         body: body.to_json,
-        headers: headers,
+        headers: post_headers,
         query: params
       )
       response.parsed_response
@@ -72,9 +73,12 @@ module Tictail
     
     def headers
       {
-        'Authorization' => 'Bearer %s' % token,
-        'Content-type' => 'application/json'
+        'Authorization' => 'Bearer %s' % token
       }
+    end
+    
+    def post_headers
+      headers.merge('Content-Type' => 'application/json')
     end
   end
 end
