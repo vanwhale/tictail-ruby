@@ -51,9 +51,29 @@ module Tictail
       response.parsed_response
     end
     
+    def cards(params={})
+      response = self.class.get(
+        '/stores/%s/cards' % store_id,
+        headers: headers,
+        query: params
+      )
+      response.parsed_response
+    end
+    
+    def create_card(body={}, params={})
+      response = self.class.post(
+        '/stores/%s/cards' % store_id,
+        body: body.to_json,
+        headers: headers,
+        query: params
+      )
+      response.parsed_response
+    end
+    
     def headers
       {
-        'Authorization' => 'Bearer %s' % token
+        'Authorization' => 'Bearer %s' % token,
+        'Content-type' => 'application/json'
       }
     end
   end
