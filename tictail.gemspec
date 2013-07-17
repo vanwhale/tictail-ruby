@@ -20,13 +20,10 @@ Gem::Specification.new do |s|
     ".document",
     "Gemfile",
     "LICENSE.txt",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
     "VERSION",
-    "lib/tictail.rb",
-    "lib/tictail/request.rb",
-    "lib/tictail/resource.rb",
-    "lib/tictail/store.rb"
+    "lib/tictail.rb"
   ]
   s.homepage = "http://github.com/evanwhalen/tictail-ruby"
   s.licenses = ["MIT"]
