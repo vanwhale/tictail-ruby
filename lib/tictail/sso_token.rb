@@ -29,7 +29,7 @@ module Tictail
     end
     
     def hash
-      Digest::SHA1.digest([store_id, Tictail.client_secret, timestamp].join(":"))
+      Digest::SHA1.hexdigest([store_id, Tictail.client_secret, timestamp].join(":"))
     end
   end
 end
