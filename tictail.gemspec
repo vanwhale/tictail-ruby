@@ -23,6 +23,9 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "VERSION",
+    "lib/tictail/access_token.rb",
+    "lib/tictail/client.rb",
+    "lib/tictail/sso_token.rb",
     "lib/tictail.rb"
   ]
   s.homepage = "http://github.com/evanwhalen/tictail-ruby"
@@ -38,7 +41,6 @@ Gem::Specification.new do |s|
       s.add_runtime_dependency(%q<httparty>, [">= 0"])
       s.add_runtime_dependency(%q<multi_json>, [">= 0"])
       s.add_runtime_dependency(%q<oauth2>, [">= 0"])
-      s.add_runtime_dependency(%q<jwt>, [">= 0"])
       s.add_development_dependency(%q<rake>, [">= 0"])
       s.add_development_dependency(%q<rspec>, [">= 0"])
       s.add_development_dependency(%q<jeweler>, [">= 0"])
@@ -47,7 +49,6 @@ Gem::Specification.new do |s|
       s.add_dependency(%q<httparty>, [">= 0"])
       s.add_dependency(%q<multi_json>, [">= 0"])
       s.add_dependency(%q<oauth2>, [">= 0"])
-      s.add_dependency(%q<jwt>, [">= 0"])
       s.add_dependency(%q<rake>, [">= 0"])
       s.add_dependency(%q<rspec>, [">= 0"])
       s.add_dependency(%q<jeweler>, [">= 0"])
@@ -57,7 +58,6 @@ Gem::Specification.new do |s|
     s.add_dependency(%q<httparty>, [">= 0"])
     s.add_dependency(%q<multi_json>, [">= 0"])
     s.add_dependency(%q<oauth2>, [">= 0"])
-    s.add_dependency(%q<jwt>, [">= 0"])
     s.add_dependency(%q<rake>, [">= 0"])
     s.add_dependency(%q<rspec>, [">= 0"])
     s.add_dependency(%q<jeweler>, [">= 0"])

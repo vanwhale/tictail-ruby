@@ -27,15 +27,7 @@ describe Tictail do
   end
   
   describe "get_access_token" do
-    let(:jwt_hash) {
-      {
-        'iss' => Tictail.site_url,
-        'aud' => Tictail.client_id,
-        'tictail_store_id' => 'test_store_id'
-      }
-    }
-    let(:encoded_id_token) { JWT.encode(jwt_hash, Tictail.client_secret) }
-    let(:oauth_token) { OAuth2::AccessToken.new(Tictail.oauth_client, 'test_token', 'id_token' => encoded_id_token) }
+    let(:oauth_token) { OAuth2::AccessToken.new(Tictail.oauth_client, 'test_token', 'store' => {'name' => 'foo'}) }
     
     before do
       Tictail.should_receive(:get_oauth_access_token).and_return(oauth_token)
@@ -47,7 +39,9 @@ describe Tictail do
         redirect_uri: 'http://localhost:3000/integrations/tictail/authorized'
       )
       access_token.token.should == 'test_token'
-      access_token.store_id.should == 'test_store_id'
+      access_token.store.should == {
+        'name' => 'foo'
+      }
     end
   end
 end

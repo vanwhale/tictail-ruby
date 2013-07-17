@@ -18,7 +18,7 @@ module Tictail
     end
     
     def oauth_client
-      OAuth2::Client.new(client_id, client_secret, :site => site_url)
+      OAuth2::Client.new(client_id, client_secret, site: site_url)
     end
     
     def site_url
@@ -27,10 +27,9 @@ module Tictail
     
     def get_access_token(*args)
       oauth_access_token = get_oauth_access_token(*args)
-      id_token = IDToken.new(oauth_access_token.params['id_token'])
       AccessToken.new(
         token: oauth_access_token.token,
-        store_id: id_token.store_id
+        store: oauth_access_token.params['store']
       )
     end
     
@@ -48,7 +47,7 @@ module Tictail
   class Unauthorized < StandardError
   end
   
-  class InvalidIDToken < StandardError
+  class InvalidSSOToken < StandardError
   end
 end
 
