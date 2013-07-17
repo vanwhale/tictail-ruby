@@ -8,7 +8,7 @@ module Tictail
     def initialize(options={})
       @store_id = options[:store_id]
       @token = options[:token]
-      @timestamp = options[:timestamp]
+      @timestamp = options[:timestamp].to_i
       validate!
     end
     

@@ -37,7 +37,6 @@ Get an access token with an auth code:
     )
     access_token.token # => 'STORE_OAUTH_ACCESS_TOKEN'
     access_token.store_id # => 'STORE_ID'
-    access_token.store # => Tictail::Store instance
 
 Build an access token with a saved access token
 
