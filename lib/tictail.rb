@@ -7,8 +7,8 @@ module Tictail
   extend self
   
   autoload :AccessToken, 'tictail/access_token'
-  autoload :IDToken, 'tictail/id_token'
   autoload :Client, 'tictail/client'
+  autoload :SSOToken, 'tictail/sso_token'
   
   class << self
     attr_accessor :client_id, :client_secret, :access_token, :store_id
